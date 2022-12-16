@@ -7,24 +7,11 @@ If other cases it should check if division is correct
 TIP: to test output of print() function use capfd fixture
 https://stackoverflow.com/a/20507769
 """
-import typing
+import importlib
 import pytest 
-
-class DivisionByOneException(Exception):
-    """You will get the same result"""
-    pass
-
-def division(x: int, y: int) -> typing.Union[None, int]:
-    if y == 0:
-        print('Division by 0')
-        print('Division finished')
-    elif y == 1:
-        print('Division finished')
-        raise DivisionByOneException("Deletion on 1 get the same result")
-    else:
-        print('Division finished')
-        return x/y
-    return None
+module = importlib.import_module('.task_exceptions', 'practice.2_python_part_2')
+division = module.division
+DivisionByOneException = module.DivisionByOneException
 
 def test_division_ok(capfd):
     value=division(6,2)

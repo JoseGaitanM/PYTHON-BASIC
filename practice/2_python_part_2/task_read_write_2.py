@@ -23,16 +23,15 @@ def generate_words(n=20):
 
     return words
 
+def generate_file(name,encode,caracter,words):
+    with open(name, 'w',encoding=encode) as f:
+        for word in words:
+            f.write(word+caracter)
+        f.close()  
+
 
 if __name__ == '__main__':
-    with open('file1.txt', 'w', encoding='utf-8') as f1:
-        for word in generate_words():
-            f1.write(word+'\n')
-        f1.close()
-
-    with open('file2.txt', 'w', encoding='cp1252') as f2:
-        for word in generate_words():
-            f2.write(word+',')
-        f2.close()
-
+    words=generate_words()
+    generate_file('file1.txt','utf-8','\n',words)
+    generate_file('file2.txt','cp1252',',',words)
 

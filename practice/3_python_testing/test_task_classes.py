@@ -3,42 +3,12 @@ Write tests for classes in 2_python_part_2/task_classes.py (Homework, Teacher, S
 Check if all methods working correctly.
 Also check corner-cases, for example if homework number of days is negative.
 """
-import pytest 
+
 import datetime
-
-class Teacher:
-    def __init__(self, last_name, first_name):
-        self.last_name = last_name
-        self.first_name = first_name
-
-    def create_homework(self, task, days_to_complete):
-        return Homework(task, days_to_complete)
-
-
-class Student:
-    def __init__(self, last_name, first_name):
-        self.last_name = last_name
-        self.first_name = first_name
-
-    def do_homework(self, homework):
-        if (homework.is_active()):
-            return homework
-        else:
-            print('You are late')
-            return None
-
-
-class Homework:
-    def __init__(self, text, days_to_complete):
-        self.text = text
-        self.created = datetime.datetime.now()
-        self.deadline = self.created + datetime.timedelta(days=days_to_complete)
-
-    def is_active(self):
-        return self.deadline > datetime.datetime.now()
-
-
-
+import importlib
+import pytest 
+module = importlib.import_module('.task_classes', 'practice.2_python_part_2')
+Teacher,Student,Homework = module.Teacher, module.Student, module.Homework
 
 @pytest.fixture
 def teacher():
