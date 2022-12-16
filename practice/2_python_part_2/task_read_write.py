@@ -15,14 +15,21 @@ Example:
 """
 
 import os
+from pathlib import Path
 
-if __name__ == '__main__':
+def create_file(path="./files"):
+    path=Path(path)
     result = []
 
-    for filename in os.listdir("./files"):
-        with open(os.path.join("./files", filename), 'rt') as f:
+    for filename in sorted(os.listdir(path)):
+        with open(os.path.join(path, filename), 'rt') as f:
             result.append(int(f.read()))
             f.close()
-
-    result_file=open('result.txt', 'w')
+    d=path/'result.txt'
+    result_file=open(d, 'w')
     result_file.write(str(result)[1:-1])
+
+
+if __name__ == '__main__':
+    create_file()
+    
