@@ -21,26 +21,22 @@ from unittest.mock import patch
 
 def print_name_address() -> None:
     dic = {}
+    fake=Faker()
+    answer=[]
+    result = {}
 
     parser = argparse.ArgumentParser()
     parser.add_argument("number",type=int)
     parser.add_argument("--data", nargs='+')
     args = parser.parse_args()
-
-    for item in args.data:
-        i = item.split('=')
-        dic[i[0]] = i[1]
-
-    return create_faker(dic,args.number)
-    
-
-def create_faker(dic,n):
-    fake=Faker()
-    answer=[]
-    result = {}
+    n=args.number
 
     for i in range(0,n):
-        for i in range(n):
+        for item in args.data:
+            i = item.split('=')
+            dic[i[0]] = i[1]
+        
+        for i in range(args.number):
             
             for key, value in dic.items():
                 fake_val = getattr(fake, value)
@@ -48,7 +44,6 @@ def create_faker(dic,n):
         print(str(result))
         answer.append(result)
     return answer
-
 
 """
 Write test for print_name_address function
@@ -60,20 +55,7 @@ Example:
     123
 """
 
-#We test the creation of the dictionaries base on the given args
 @patch('argparse.ArgumentParser.parse_args',
             return_value=argparse.Namespace(number=4, data=['--fake-address=address','--some_name=name']))
-def test_print_name_address(mock_args):
-    result=print_name_address()
-    assert len(result)==4
-    
-
-def test_create_faker():
-    #With seed we make sure that faker returns the expected value
-    Faker.seed(10)
-    dict = {'--fake-address':'address','--some_name':'name'}
-    expected_result=[
-        {'--fake-address': '9037 Colon Shoal Apt. 087\nCharlesstad, AZ 55603', '--some_name': 'Lindsey James'}]
-    result=create_faker(dict,1)
-
-    assert expected_result==result
+def test_command(mock_args):
+    assert len(print_name_address())==4
