@@ -32,3 +32,63 @@ Links:
     - lxml docs: https://lxml.de/
 """
 
+import requests
+import re 
+from bs4 import BeautifulSoup
+
+BASE_URL = "https://finance.yahoo.com/"
+HEADERS = {'User-Agent': 'Custom'}
+
+def create_link(*args):
+    result = BASE_URL
+    for rute in args:
+        result=result+rute+'/'
+    return result
+
+def get_content(link):
+    return requests.get(link,headers=HEADERS).content
+
+def get_elemnts(soup,tag,attribute,value):
+    return soup.find_all(tag,attrs={attribute : value})
+
+def get_elemnt(soup,tag,attribute,value):
+    return soup.find(tag,attrs={attribute : value})
+
+def get_youngest_ceo(n):
+    data={}
+    contents=[]
+    companies=[]
+    url=create_link('most-active')
+    content = get_content(url)
+
+    soup = BeautifulSoup(content, 'html.parser')
+    links=get_elemnts(soup,'a','data-test','quoteLink')
+
+    for link in links:
+        companies.append(link.get('href').split('=')[1])
+    
+    for company in companies:
+        c=get_content('https://finance.yahoo.com/quote/TSLA/profile?p='+company)
+        s = BeautifulSoup(c, 'html.parser')
+        result=get_elemnt(s,'div','class','Mb(25px)').contents
+
+        data['Name']=result.previous_sibling.contents[0]
+        data['Code']=
+
+        contents.append(result)
+        #data{'Name':}
+        break
+    
+    print(type(contents[0]))
+    title_tag=contents[0].contents[0]
+    print(title_tag)
+    
+    print(len(contents))
+    print(companies)
+
+if __name__ == '__main__':
+    get_youngest_ceo(5)
+
+    
+
+
