@@ -3,6 +3,7 @@ import asyncio
 import time
 import os 
 from aiofile import async_open
+import aiofiles
 import requests
 
 API_KEY = 'mBUKdrhIVLJu2AUXVOuRzlesWqAgA40fWZhdogr8'
@@ -10,15 +11,14 @@ APOD_ENDPOINT = 'https://api.nasa.gov/planetary/apod'
 OUTPUT_IMAGES = './output'
 
 async def create_file(name,content):
-    async with async_open(name, 'wb') as file:
+    async with aiofiles.open(name, "wb") as file:
         await file.write(content)
-
+         
 async def download_image(session,m):
     async with session.get(m['url']) as resp:
         content= await resp.read()
-
-    name=f"output/{m['date']}.jpg"
-    await create_file(name,content)
+        name=f"output/{m['date']}.jpg"
+        await create_file(name,content)
 
 
 async def download_apod_images(metadata):
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     resp=requests.get(url)
     result=resp.json()
 
-    asyncio.run(download_apod_images(result))
+    asyncio.get_event_loop().run_until_complete(download_apod_images(result))
 
     duration = time.time() - start_time
     print('Time: ',duration)
