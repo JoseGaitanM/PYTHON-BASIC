@@ -1,0 +1,11 @@
+{
+    "date": "timestamp:",
+    "name": "str:rand",
+    "type": "['client', 'partner', 'government']",
+    "age": "int:rand(1, 90)",
+    "list": "int:[8, 9, 0]",
+    "int_alone": "int:5",
+    "str_alone": "str:cat",
+    "empty_str": "str",
+    "empty_int": "int:"
+}
